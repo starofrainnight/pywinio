@@ -17,7 +17,6 @@ import math
 import rabird.core.distutils
 import rabird.core.logging
 from setuptools import setup, find_packages
-from setuptools.command.install import install
 from distutils.command.build import build
 
 def download_file(url):
