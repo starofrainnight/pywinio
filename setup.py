@@ -82,8 +82,6 @@ class custom_build_command(build):
         
         build.run(self)
 
-from_package = 'src'
-to_package = 'rabird'
 package_name = 'rabird.winio'
 
 # Convert source to v2.x if we are using python 2.x.
@@ -102,14 +100,12 @@ long_description=(
 
 setup(
     name=package_name,
-    version="0.0.8",
+    version="0.0.9",
     author="Hong-She Liang",
     author_email="starofrainnight@gmail.com",
     url="https://github.com/starofrainnight/%s" % package_name,
     description="The wrapper library for winio",
     long_description=long_description,    
-    py_modules=[package_name],    
-    keywords = "winio",
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",        
@@ -123,6 +119,7 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     install_requires=our_requires,
+    package_dir = {"": source_dir},
     packages=our_packages,
     data_files=[("data", glob.glob("WinIO/Binaries/*"))],
     cmdclass= {
