@@ -87,32 +87,40 @@ to_package = 'rabird'
 package_name = 'rabird.winio'
 
 # Convert source to v2.x if we are using python 2.x.
-rabird.core.distutils.preprocess_sources_for_compatible(from_package, os.path.realpath(os.curdir))
+source_dir = rabird.core.distutils.preprocess_source()
 
 # Exclude the original source package, only accept the preprocessed package!
-our_packages = find_packages(exclude=[from_package, '%s.*' % (from_package)])
+our_packages = find_packages(where=source_dir)
 
-our_packages = find_packages()
 our_requires = ['pywin32']
+
+long_description=(
+     open("README.rst", "r").read()
+     + "\n" +
+     open("CHANGES.rst", "r").read()
+     )
 
 setup(
     name=package_name,
-    version="0.0.7",
+    version="0.0.8",
     author="Hong-She Liang",
     author_email="starofrainnight@gmail.com",
-    url="",
-    zip_safe=False, # Unpack the egg downloaded_file during installation.
-    py_modules=[package_name],
-    description="%s library" % package_name,
+    url="https://github.com/starofrainnight/%s" % package_name,
+    description="The wrapper library for winio",
+    long_description=long_description,    
+    py_modules=[package_name],    
     keywords = "winio",
     classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Developers",        
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: Microsoft :: Windows", 
         "Programming Language :: Python :: 2",
         "Programming Language :: Python :: 3",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: Microsoft :: Windows",
-        "Development Status :: 4 - Beta",
+        "Programming Language :: Python :: Implementation :: CPython",        
+        "Framework :: Rabird",
         "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     install_requires=our_requires,
     packages=our_packages,
@@ -120,5 +128,6 @@ setup(
     cmdclass= {
         'build': custom_build_command,
     },
-    namespace_packages = [to_package],
+    namespace_packages = [package_name.split(".")[0]],
+    zip_safe=False, # Unpack the egg downloaded_file during installation.
     )
