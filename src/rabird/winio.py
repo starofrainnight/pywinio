@@ -258,7 +258,7 @@ class WinIO(object):
 		return False	
 		
 	def __get_driver_file_path(self):
-		pywinio_module_dir = os.path.join(os.path.dirname(__file__), 'data')
+		pywinio_module_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
 		if self.__is_64bit_os():
 			result = os.path.join(pywinio_module_dir, 'WinIo64.sys')
 		else:
