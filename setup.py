@@ -12,7 +12,7 @@ import fnmatch
 import glob
 import zipfile
 import shutil
-import urllib2
+from six.moves import urllib
 import math
 import rabird.core.distutils
 import rabird.core.logging
@@ -33,7 +33,7 @@ def download_file(url):
     try:
         downloaded_file = os.path.join(os.curdir, file_name)
         
-        req = urllib2.urlopen(url)
+        req = urllib.request.urlopen(url)
         total_size = int(req.info().getheader("Content-Length").strip())
         downloaded_size = 0
         block_size = 16 * 1024 # 16k each chunk
@@ -52,11 +52,11 @@ def download_file(url):
                 
                 fp.write(readed_buffer)
                 
-    except urllib2.HTTPError, e:
-        print "HTTP Error:", e.code, url
+    except urllib2.HTTPError as e:
+        print("HTTP Error: %s %s" % (e.code, url))
         return False
-    except urllib2.URLError, e:
-        print "URL Error:", e.reason, url
+    except urllib2.URLError as e:
+        print("URL Error: %s %s" % (e.reason, url))
         return False
     
     return downloaded_file
