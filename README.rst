@@ -1,7 +1,7 @@
 rabird.winio
 -----------
 
-The wrapper library for winio 
+A wrapper library for winio 
 
 Known issues
 ------------

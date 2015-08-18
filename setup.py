@@ -104,7 +104,7 @@ setup(
     author="Hong-She Liang",
     author_email="starofrainnight@gmail.com",
     url="https://github.com/starofrainnight/%s" % package_name,
-    description="The wrapper library for winio",
+    description="A wrapper library for winio",
     long_description=long_description,    
     classifiers=[
         "Development Status :: 3 - Alpha",
