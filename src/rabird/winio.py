@@ -255,7 +255,10 @@ class WinIO(object):
 			if os.environ['PROCESSOR_ARCHITEW6432'] == 'AMD64':
 				return True
 				
-		return False	
+		if "64" in os.environ["PROCESSOR_ARCHITECTURE"]:
+			return True
+				
+		return False		
 		
 	def __get_driver_file_path(self):
 		# Find the data directory 		
