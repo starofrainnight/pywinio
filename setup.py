@@ -17,7 +17,6 @@ import math
 import rabird.core.distutils
 import rabird.core.logging
 from setuptools import setup, find_packages
-from distutils.command.build import build
 
 def download_file(url):
     """Helper to download large files
@@ -60,27 +59,23 @@ def download_file(url):
         return False
     
     return downloaded_file
-
-class custom_build_command(build):
-    def run(self):
-      
-        # Download required winio binaries
-        winio_url = "http://www.internals.com/utilities/WinIo.zip"
-        winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
-        if not os.path.exists(winio_path):
-            download_file(winio_url)
-            
-        # If existed data directory, we rebuild it
-        data_path = os.curdir
-        if os.path.exists("WinIO"):
-            shutil.rmtree("WinIO")
-            
-        # Open the winio zip downloaded_file and unzip to ./data directory.
-        winio_zip = zipfile.ZipFile(winio_path)
-        winio_zip.extractall(data_path)
-        winio_zip.close()
+   
+def download_winio_binary():
+    # Download required winio binaries
+    winio_url = "http://www.internals.com/utilities/WinIo.zip"
+    winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
+    if not os.path.exists(winio_path):
+        download_file(winio_url)
         
-        build.run(self)
+    # If existed data directory, we rebuild it
+    data_path = os.curdir
+    if os.path.exists("WinIO"):
+        shutil.rmtree("WinIO")
+        
+    # Open the winio zip downloaded_file and unzip to ./data directory.
+    winio_zip = zipfile.ZipFile(winio_path)
+    winio_zip.extractall(data_path)
+    winio_zip.close()
 
 package_name = 'rabird.winio'
 
@@ -97,6 +92,9 @@ long_description=(
      + "\n" +
      open("CHANGES.rst", "r").read()
      )
+
+# Prepare winio binary files for setup()
+download_winio_binary()
 
 setup(
     name=package_name,
@@ -120,9 +118,6 @@ setup(
     package_dir = {"": source_dir},
     packages=our_packages,
     data_files=[("data", glob.glob("WinIO/Binaries/*"))],
-    cmdclass= {
-        'build': custom_build_command,
-    },
     namespace_packages = [package_name.split(".")[0]],
     zip_safe=False, # Unpack the egg downloaded_file during installation.
     )
