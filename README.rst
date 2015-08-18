@@ -17,4 +17,4 @@ Licenses
 
 This library used MIT license which already descripted in LICENSE.txt
 
-WinIO library's license descripted in WINIO-LICENSE.txt 
+WinIO library's license descripted in LICENSE-WINIO.txt 
