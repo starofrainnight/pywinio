@@ -52,10 +52,10 @@ def download_file(url):
                 
                 fp.write(readed_buffer)
                 
-    except urllib2.HTTPError as e:
+    except urllib.error.HTTPError as e:
         print("HTTP Error: %s %s" % (e.code, url))
         return False
-    except urllib2.URLError as e:
+    except urllib.error.URLError as e:
         print("URL Error: %s %s" % (e.reason, url))
         return False
     
