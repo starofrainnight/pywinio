@@ -1,5 +1,5 @@
 rabird.winio
-===========
+===============
 
 A wrapper library for winio .
 
@@ -8,12 +8,12 @@ Thanks for the great WinIO library which comes from Yariv Kaplan.
 The WinIO library binary distribution will download from http://www.internals.com/ during setup.
 
 Known issues
-===========
+================
 
 1. Not work for client OS in virtualbox machine
 
 Licenses
-===========
+===============
 
 Our library used MIT license which already descripted in LICENSE.txt
 
@@ -22,7 +22,7 @@ But you should notice the license comes from WinIO.
 The license comes with WinIO library:
 
 Software License Agreement for WinIo 
---------------------------------------
+-------------------------------------------
 
 The following terms apply to all files associated with the software unless explicitly disclaimed in individual files. 
 
