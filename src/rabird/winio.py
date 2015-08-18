@@ -112,7 +112,7 @@ class WinIO(object):
 		try:
 			ServiceStatus = win32service.ControlService(hService, win32service.SERVICE_CONTROL_STOP);
 		except pywintypes.error as e:
-			if e[0] == EC_SERVICE_NOT_STARTED:
+			if e.winerror == EC_SERVICE_NOT_STARTED:
 				return
 			else:
 				raise e
@@ -206,10 +206,10 @@ class WinIO(object):
 				win32service.DeleteService(hService);
 			
 		except pywintypes.error as e:
-			if e[0] == EC_SERVICE_NOT_INSTALLED:
+			if e.winerror == EC_SERVICE_NOT_INSTALLED:
 				return
-			else:
-				raise e
+				
+			raise
 				
 	def install_driver(self, pszWinIoDriverPath, IsDemandLoaded):
 		hService = None;
@@ -238,10 +238,10 @@ class WinIO(object):
 				None,
 				None);
 		except pywintypes.error as e:
-			if e[0] == EC_SERVICE_EXISTED: # Service existed!
+			if e.winerror == EC_SERVICE_EXISTED: # Service existed!
 				return True
-			else: 
-				raise e
+
+			raise
 				
 	def __start_driver(self):
 		hService = None
@@ -258,7 +258,20 @@ class WinIO(object):
 		return False	
 		
 	def __get_driver_file_path(self):
-		pywinio_module_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+		# Find the data directory 		
+		while True:
+			# If we installed by pip, the data directory will be ../../../data		
+			pywinio_module_dir = os.path.join(os.path.dirname(__file__), '../../..', 'data')
+			if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):			
+				break
+				
+			# If we installed by easy_install, the data directory will be ../data
+			pywinio_module_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+			if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):
+				break
+				
+			break
+							
 		if self.__is_64bit_os():
 			result = os.path.join(pywinio_module_dir, 'WinIo64.sys')
 		else:
@@ -284,7 +297,7 @@ class WinIO(object):
 			# not uninstall it.
 			self.__is_need_uninstall_driver = False
 		except pywintypes.error as e:
-			if e[0] != EC_FILE_NOT_FOUND:
+			if e.winerror != EC_FILE_NOT_FOUND:
 				raise e
 
 		# If the driver is not running, install it
