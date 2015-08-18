@@ -33,7 +33,11 @@ def download_file(url):
         downloaded_file = os.path.join(os.curdir, file_name)
         
         req = urllib.request.urlopen(url)
-        total_size = int(req.info().getheader("Content-Length").strip())
+        try: # Compatible with python2
+            total_size = int(req.getheader("Content-Length").strip())
+        except:
+            total_size = int(req.info().getheader("Content-Length").strip())
+            
         downloaded_size = 0
         block_size = 16 * 1024 # 16k each chunk
         
