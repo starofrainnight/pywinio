@@ -22,7 +22,7 @@ But you should notice the license comes from WinIO.
 The license comes with WinIO library:
 
 Software License Agreement for WinIo 
----------------------------------
+--------------------------------------
 
 The following terms apply to all files associated with the software unless explicitly disclaimed in individual files. 
 
@@ -30,11 +30,19 @@ IMPORTANT- PLEASE READ CAREFULLY: BY INSTALLING THE SOFTWARE (AS DEFINED BELOW),
 
 1. GRANT OF LICENSE: Subject to the terms below, Yariv Kaplan ("AUTHOR") hereby grants you a non-exclusive, non-transferable, non-assignable license to install and to use the downloadable version of WinIo ("SOFTWARE"). 
 
-a. Redistributable Code. Permission is hereby granted to you, free of charge, to reproduce and distribute the object code form of the SOFTWARE solely in conjunction with, and as part of, your application ("Permitted Application"); provided that you comply with the following: 
+ a. Redistributable Code. Permission is hereby granted to you, free of charge, to reproduce and distribute the object code form of the SOFTWARE solely in conjunction with, and as part of, your application ("Permitted Application"); provided that you comply with the following: 
 
-If you redistribute any portion of the Redistributable Code, you agree that: (i) you will only distribute the Redistributable Code in conjunction with, and as part of, your Permitted Application which adds significant functionality to the Redistributable Code and that distribution of the Permitted Application does not compete with the AUTHOR's distribution of the SOFTWARE; (ii) you will include a valid copyright notice on your Permitted Application; (iii) you will not permit further redistribution of the Redistributable Code; and (iv) you will indemnify, hold harmless, and defend the AUTHOR from and against any claims or lawsuits, including attorneys' fees, that arise or result from the use or distribution of your Permitted Application. 
+  If you redistribute any portion of the Redistributable Code, you agree that: 
+  
+   (i) you will only distribute the Redistributable Code in conjunction with, and as part of, your Permitted Application which adds significant functionality to the Redistributable Code and that distribution of the Permitted Application does not compete with the AUTHOR's distribution of the SOFTWARE; 
+   
+   (ii) you will include a valid copyright notice on your Permitted Application; 
+   
+   (iii) you will not permit further redistribution of the Redistributable Code; 
+   
+   (iv) you will indemnify, hold harmless, and defend the AUTHOR from and against any claims or lawsuits, including attorneys' fees, that arise or result from the use or distribution of your Permitted Application. 
 
-b. License to use Source Code. You may not sell, lease, rent, transfer or sublicense the source code of this SOFTWARE. 
+ b. License to use Source Code. You may not sell, lease, rent, transfer or sublicense the source code of this SOFTWARE. 
 
 2. MODIFICATION: SOFTWARE Source Code may be modified without the prior written permission of the AUTHOR. Any modifications made to the SOFTWARE will continue to be subject to the terms and conditions of this AGREEMENT. 
 
