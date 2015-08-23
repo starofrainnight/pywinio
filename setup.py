@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from ez_setup import use_setuptools
-use_setuptools()
+from rabird_bootstrap import use_rabird
+use_rabird()
     
 import os
 import os.path
