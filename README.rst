@@ -10,7 +10,7 @@ The WinIO library binary distribution will download from http://www.internals.co
 Notice
 ================
 
-This library depends on pywin32 package, but that package can't install directly by pip or easy_insatll. You must install it manually first.
+This library depends on pywin32 package, but that package can't install directly by pip or easy_install. You must install it manually first.
 
 pywin32: http://sourceforge.net/projects/pywin32/
 
