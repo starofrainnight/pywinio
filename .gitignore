@@ -55,3 +55,17 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Eclipse project files
+.settings/*
+.project
+.pydevproject
+
+# Temporary files
+*.bak
+*.old
+preprocessed/
+WinIo/
+WinIo.zip
+
+
