@@ -17,59 +17,14 @@ import math
 import rabird.core.distutils
 import rabird.core.logging
 from setuptools import setup, find_packages
-
-def download_file(url):
-    """Helper to download large files
-    the only arg is a url
-    the downloaded_file will also be downloaded_size
-    in chunks and print out how much remains
-    """
-    
-    file_name = os.path.basename(url)
-    
-    print("Download winio zip package from : %s ..." % (url))
-    
-    try:
-        downloaded_file = os.path.join(os.curdir, file_name)
-        
-        req = urllib.request.urlopen(url)
-        try: # Compatible with python2
-            total_size = int(req.getheader("Content-Length").strip())
-        except:
-            total_size = int(req.info().getheader("Content-Length").strip())
-            
-        downloaded_size = 0
-        block_size = 16 * 1024 # 16k each chunk
-        
-        print("Total size of winio zip package : %s" % (total_size))
-        
-        with open(downloaded_file, "wb") as fp:
-            while True:
-                readed_buffer = req.read(block_size)
-                if not readed_buffer:
-                    break
-                
-                downloaded_size += len(readed_buffer)
-                
-                print("Downloaded : %s%%" % (math.floor((float(downloaded_size) / float(total_size)) * 100)))
-                
-                fp.write(readed_buffer)
-                
-    except urllib.error.HTTPError as e:
-        print("HTTP Error: %s %s" % (e.code, url))
-        return False
-    except urllib.error.URLError as e:
-        print("URL Error: %s %s" % (e.reason, url))
-        return False
-    
-    return downloaded_file
+from rabird.core.distutils.utils import easy_download
    
 def download_winio_binary():
     # Download required winio binaries
     winio_url = "http://www.internals.com/utilities/WinIo.zip"
     winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
     if not os.path.exists(winio_path):
-        download_file(winio_url)
+        easy_download(winio_url)
         
     # If existed data directory, we rebuild it
     data_path = os.curdir
