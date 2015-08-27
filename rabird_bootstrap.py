@@ -148,7 +148,7 @@ def get_best_downloader():
         if dl.viable():
             return dl
         
-def easy_download(url):
+def download(url):
     downloader = get_best_downloader()
     downloader(url, os.path.basename(url))
 
@@ -163,7 +163,7 @@ def use_pip():
         # setuptools and wheel. 
         url = "https://bootstrap.pypa.io/get-pip.py"
         filename = os.path.basename(url)
-        easy_download(url)
+        download(url)
         os.system("%s %s" % (sys.executable, filename))
         
 def use_rabird():
