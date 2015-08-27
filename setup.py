@@ -17,14 +17,14 @@ import math
 import rabird.core.distutils
 import rabird.core.logging
 from setuptools import setup, find_packages
-from rabird.core.distutils.utils import easy_download
+from rabird.core.distutils.downloader import download
    
 def download_winio_binary():
     # Download required winio binaries
     winio_url = "http://www.internals.com/utilities/WinIo.zip"
     winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
     if not os.path.exists(winio_path):
-        easy_download(winio_url)
+        download(winio_url)
         
     # If existed data directory, we rebuild it
     data_path = os.curdir
