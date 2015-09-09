@@ -134,7 +134,7 @@ class WinIO(object):
 				win32file.DeviceIoControl(
 				self.hDriver, 
 				IOCTL_WINIO_READPORT, 
-				buffer(PortStruct)[:],
+				memoryview(PortStruct),
 				4))[0];
 		else:
 			if bSize == 1:
@@ -167,7 +167,7 @@ class WinIO(object):
 			win32file.DeviceIoControl(
 				self.hDriver, 
 				IOCTL_WINIO_WRITEPORT, 
-				buffer(PortStruct)[:],
+				memoryview(PortStruct),
 				4)
 		else:
 			if bSize == 1:
