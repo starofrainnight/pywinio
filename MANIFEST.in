@@ -3,7 +3,7 @@ recursive-include src *
 include *.rst
 include *.txt
 include setup.cfg
-include ez_setup.py
+include rabird_bootstrap.py
 
 prune preprocessed
 
