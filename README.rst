@@ -32,11 +32,6 @@ bcdedit.exe /set TESTSIGNING ON
  
 For more information on Windows driver signing requirements, please refer to http://www.microsoft.com/whdc/winlogo/drvsign/kmcs_walkthrough.mspx.
 
-Known issues
-================
-
-1. Not work for client OS in virtualbox machine
-
 Licenses
 ===============
 
