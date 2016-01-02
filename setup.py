@@ -44,7 +44,7 @@ source_dir = rabird.core.distutils.preprocess_source()
 # Exclude the original source package, only accept the preprocessed package!
 our_packages = find_packages(where=source_dir)
 
-our_requires = ['pywin32']
+our_requires = []
 
 long_description=(
      open("README.rst", "r").read()
