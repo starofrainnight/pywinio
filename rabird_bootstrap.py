@@ -33,6 +33,7 @@ import os
 import os.path
 import platform
 import subprocess
+import sys
 
 def _clean_check(cmd, target):
     """
@@ -173,4 +174,19 @@ def use_rabird():
         use_pip()    
         import pip
         pip.main(["install", "rabird.core"])
-                
+        
+        module_dirs = "rabird/core/__init__.py"         
+        for apath in sys.path:
+            module_path = os.path.join(apath, module_dirs)
+            if os.path.exists(module_path) and os.path.isfile(module_path):
+                # Generate empty __init__.py into rabird/, an ugly fix 
+                # for can't find rabird.core module during installation.
+                #
+                # Because there does not have any __init__.py in the 
+                # namespace directory and we can't import it immediately
+                # after pip installed in the same process, so we added 
+                # an empty __init__.py into rabird/ namespace directory
+                # for satisfy it.
+                afile = open(os.path.join(os.path.dirname(os.path.dirname(module_path)), "__init__.py"), "wb")
+                afile.close()
+                break
