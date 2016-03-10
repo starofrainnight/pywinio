@@ -1,11 +1,82 @@
 rabird.winio
------------------
+========================
 
 A wrapper library for winio .
 
 Thanks for the great WinIO library which comes from Yariv Kaplan.
 
 The WinIO library binary distribution will download from http://www.internals.com/ during setup.
+
+Usage
+========================
+
+* Keyboard Emulation
+
+::
+  
+    import rabird.winio
+    import time
+    import win32api
+    import win32con
+    import atexit
+    
+    # KeyBoarD Commands
+    # Command port
+    KBC_KEY_CMD	= 0x64
+    # Data port
+    KBC_KEY_DATA = 0x60
+    
+    __winio = None
+    
+    def __get_winio():
+    	global __winio
+    	
+    	if __winio is None:
+    		__winio = rabird.winio.WinIO()
+    		def __clear_winio():
+    			global __winio
+    			__winio = None
+    		atexit.register(__clear_winio)
+    		
+    	return __winio	
+    
+    def wait_for_buffer_empty():
+    	'''
+    	Wait keyboard buffer empty
+    	'''
+    	
+    	winio = __get_winio()
+    	
+    	dwRegVal = 0x02
+    	while (dwRegVal & 0x02):
+    		dwRegVal = winio.get_port_byte(KBC_KEY_CMD)
+    		
+    def key_down(scancode):
+    	winio = __get_winio()
+    	
+    	wait_for_buffer_empty();
+    	winio.set_port_byte(KBC_KEY_CMD, 0xd2);
+    	wait_for_buffer_empty();
+    	winio.set_port_byte(KBC_KEY_DATA, scancode)
+    
+    def key_up(scancode):
+    	winio = __get_winio()
+    	
+    	wait_for_buffer_empty();
+    	winio.set_port_byte( KBC_KEY_CMD, 0xd2);
+    	wait_for_buffer_empty();
+    	winio.set_port_byte( KBC_KEY_DATA, scancode | 0x80);
+    
+    def key_press(scancode, press_time = 0.2):
+    	key_down( scancode )
+    	time.sleep( press_time )
+    	key_up( scancode )
+ 
+    	
+    # Press 'A' key
+    # Scancodes references : https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
+    key_press(0x1E)
+
 
 Privilege Requirements
 ========================
@@ -26,7 +97,9 @@ Driver Signing Requirements on 64-bit Systems
 * Open an elevated command window by right-clicking the icon and clicking "Run as Administrator". 
 * Type the following command to enable test-signing:
 
-bcdedit.exe /set TESTSIGNING ON
+ ::
+ 
+  bcdedit.exe /set TESTSIGNING ON
  
 * Reboot the machine 
  
