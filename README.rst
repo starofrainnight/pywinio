@@ -20,7 +20,7 @@ Usage
     import win32con
     import atexit
     
-    # KeyBoarD Commands
+    # KeyBoard Commands
     # Command port
     KBC_KEY_CMD	= 0x64
     # Data port
