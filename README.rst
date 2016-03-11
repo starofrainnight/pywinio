@@ -16,8 +16,6 @@ Usage
   
     import rabird.winio
     import time
-    import win32api
-    import win32con
     import atexit
     
     # KeyBoard Commands
