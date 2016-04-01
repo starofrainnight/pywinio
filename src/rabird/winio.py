@@ -71,6 +71,9 @@ def NotInitializedError(RuntimeError):
 def InvalidArgumentError(ValueError):
 	pass
 
+def DeviceIoControlError(RuntimeError):
+	pass
+
 class tagPhysStruct(ctypes.Structure):
 	_fields_ = [
 			('dwPhysMemSizeInBytes', ctypes.c_ulonglong),
@@ -185,7 +188,20 @@ class WinIO(object):
 	
 	def set_port_dword(self, wPortAddr, dwPortVal):
 		return self.__set_port_value(wPortAddr, dwPortVal, 4)
-			
+	
+	def map_phys_to_lin(self, PhysStruct):
+		if not self.dll_is_initialized:
+			raise NotInitializedError()
+	
+		if (not win32file.DeviceIoControl(
+			self.hDriver, 
+			IOCTL_WINIO_MAPPHYSTOLIN, 
+			memoryview(PhysStruct),
+			memoryview(PhysStruct))):
+			raise DeviceIoControlError("Failed on IOCTL_WINIO_MAPPHYSTOLIN")
+	
+		return PhysStruct.pvPhysMemLin
+
 	def uninstall_driver(self):
 		hService = None;
 		pServiceConfig = None
@@ -242,7 +258,7 @@ class WinIO(object):
 				return True
 
 			raise
-				
+		
 	def __start_driver(self):
 		hService = None
 		bResult = True
