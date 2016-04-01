@@ -228,7 +228,28 @@ class WinIO(object):
 	
 		self.unmap_physical_memory(PhysStruct)
 	
-		return dwPhysVal;
+		return dwPhysVal	
+
+	def set_phys_long(self, pbPhysAddr, dwPhysVal):
+		PhysStruct = tagPhysStruct()
+	
+		if not self.dll_is_initialized:
+			raise NotInitializedError()
+	
+		PhysStruct.pvPhysAddress = pbPhysAddr
+	
+		PhysStruct.dwPhysMemSizeInBytes = 4;
+	
+		pdwLinAddr = self.map_phys_to_lin(PhysStruct)
+		if (pdwLinAddr == 0):
+			raise ValueError("Linear address invalid!")
+
+		data = ctypes.cast(
+			ctypes.c_void_p(pdwLinAddr.value), 
+			ctypes.POINTER(ctypes.c_ulong))
+		data.contents.value = dwPhysVal
+		
+		self.unmap_physical_memory(PhysStruct)
 	
 	def uninstall_driver(self):
 		hService = None;
