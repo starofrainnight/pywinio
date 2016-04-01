@@ -12,6 +12,8 @@ Usage
 
 * Keyboard Emulation
 
+ NOTICE: You must have a ps/2 keyboard connected to your PC if you test on win10 or later, otherwise this sample won't works!
+
 ::
   
     import rabird.winio
