@@ -201,7 +201,18 @@ class WinIO(object):
 			raise DeviceIoControlError("Failed on IOCTL_WINIO_MAPPHYSTOLIN")
 	
 		return PhysStruct.pvPhysMemLin
-
+	
+	def unmap_physical_memory(self, PhysStruct):
+		if not self.dll_is_initialized:
+			raise NotInitializedError()
+		
+		if (not win32file.DeviceIoControl(
+			self.hDriver, 
+			IOCTL_WINIO_UNMAPPHYSADDR, 
+			memoryview(PhysStruct),
+			None)):
+			raise DeviceIoControlError("Failed on IOCTL_WINIO_UNMAPPHYSADDR")
+	
 	def uninstall_driver(self):
 		hService = None;
 		pServiceConfig = None
