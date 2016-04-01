@@ -212,6 +212,23 @@ class WinIO(object):
 			memoryview(PhysStruct),
 			None)):
 			raise DeviceIoControlError("Failed on IOCTL_WINIO_UNMAPPHYSADDR")
+
+	def get_phys_long(self, pbPhysAddr):
+		PhysStruct= tagPhysStruct()
+	
+		if not self.dll_is_initialized:
+			raise NotInitializedError()
+	
+		PhysStruct.pvPhysAddress = pbPhysAddr;
+		PhysStruct.dwPhysMemSizeInBytes = 4;
+	
+		pdwLinAddr = self.map_phys_to_lin(PhysStruct)
+		dwLinAddrRaw = bytes((ctypes.c_char * 4).from_address(pdwLinAddr.value))
+		dwPhysVal = struct.unpack('@L', dwLinAddrRaw)
+	
+		self.unmap_physical_memory(PhysStruct)
+	
+		return dwPhysVal;
 	
 	def uninstall_driver(self):
 		hService = None;
