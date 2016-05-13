@@ -98,6 +98,13 @@ class tagPortStruct(ctypes.Structure):
     _pack_ = 1
 
 
+def _ensure_initialized(method):
+    def wrapper(self, *args, **kwargs):
+        if not self.dll_is_initialized:
+            raise NotInitializedError()
+        return method(self, *args, **kwargs)
+    return wrapper
+
 class WinIO(object):
     # Rewrote __new__ for Singleton design.
 
@@ -128,10 +135,8 @@ class WinIO(object):
             else:
                 raise e
 
+    @_ensure_initialized
     def __get_port_value(self, wPortAddr, bSize):
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         if bSize not in [1, 2, 4]:
             raise InvalidArgumentError(
                 'Argument "bSize" only accept 1, 2, 4. Current value : %s!' % (str(bSize)))
@@ -166,10 +171,8 @@ class WinIO(object):
     def get_port_dword(self, wPortAddr):
         return self.__get_port_value(wPortAddr, 4)
 
+    @_ensure_initialized
     def __set_port_value(self, wPortAddr, dwPortVal, bSize):
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         # If this is a 64 bit OS, we must use the driver to access I/O ports even
         # if the application is 32 bit
         if self.__is_64bit_os():
@@ -200,10 +203,8 @@ class WinIO(object):
     def set_port_dword(self, wPortAddr, dwPortVal):
         return self.__set_port_value(wPortAddr, dwPortVal, 4)
 
+    @_ensure_initialized
     def map_phys_to_lin(self, PhysStruct):
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         if (not win32file.DeviceIoControl(
                 self.hDriver,
                 IOCTL_WINIO_MAPPHYSTOLIN,
@@ -213,10 +214,8 @@ class WinIO(object):
 
         return PhysStruct.pvPhysMemLin
 
+    @_ensure_initialized
     def unmap_physical_memory(self, PhysStruct):
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         if (not win32file.DeviceIoControl(
                 self.hDriver,
                 IOCTL_WINIO_UNMAPPHYSADDR,
@@ -224,12 +223,9 @@ class WinIO(object):
                 None)):
             raise DeviceIoControlError("Failed on IOCTL_WINIO_UNMAPPHYSADDR")
 
+    @_ensure_initialized
     def get_phys_long(self, pbPhysAddr):
         PhysStruct = tagPhysStruct()
-
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         PhysStruct.pvPhysAddress = pbPhysAddr
         PhysStruct.dwPhysMemSizeInBytes = 4
 
@@ -241,14 +237,10 @@ class WinIO(object):
 
         return dwPhysVal
 
+    @_ensure_initialized
     def set_phys_long(self, pbPhysAddr, dwPhysVal):
         PhysStruct = tagPhysStruct()
-
-        if not self.dll_is_initialized:
-            raise NotInitializedError()
-
         PhysStruct.pvPhysAddress = pbPhysAddr
-
         PhysStruct.dwPhysMemSizeInBytes = 4
 
         pdwLinAddr = self.map_phys_to_lin(PhysStruct)
