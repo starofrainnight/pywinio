@@ -105,6 +105,7 @@ def _ensure_initialized(method):
         return method(self, *args, **kwargs)
     return wrapper
 
+
 class WinIO(object):
     # Rewrote __new__ for Singleton design.
 
@@ -116,7 +117,8 @@ class WinIO(object):
 
     def __init__(self):
         self.dll_is_initialized = False
-        self.hSCManager = win32service.OpenSCManager(None, None, win32service.SC_MANAGER_ALL_ACCESS)
+        self.hSCManager = win32service.OpenSCManager(
+            None, None, win32service.SC_MANAGER_ALL_ACCESS)
         self.hDriver = None
         self.__is_need_uninstall_driver = True
         self.__initialize()
@@ -128,7 +130,8 @@ class WinIO(object):
         hService = win32service.OpenService(
             self.hSCManager, 'WINIO', win32service.SERVICE_ALL_ACCESS)
         try:
-            ServiceStatus = win32service.ControlService(hService, win32service.SERVICE_CONTROL_STOP)
+            ServiceStatus = win32service.ControlService(
+                hService, win32service.SERVICE_CONTROL_STOP)
         except pywintypes.error as e:
             if e.winerror == EC_SERVICE_NOT_STARTED:
                 return
@@ -188,11 +191,14 @@ class WinIO(object):
                 4)
         else:
             if bSize == 1:
-                ctypes.cdll.msvcrt._outp(ctypes.c_ushort(wPortAddr), ctypes.c_int(dwPortVal))
+                ctypes.cdll.msvcrt._outp(ctypes.c_ushort(
+                    wPortAddr), ctypes.c_int(dwPortVal))
             elif bSize == 2:
-                ctypes.cdll.msvcrt._outpw(ctypes.c_ushort(wPortAddr), ctypes.c_ushort(dwPortVal))
+                ctypes.cdll.msvcrt._outpw(ctypes.c_ushort(
+                    wPortAddr), ctypes.c_ushort(dwPortVal))
             elif bSize == 4:
-                ctypes.cdll.msvcrt._outpd(ctypes.c_ushort(wPortAddr), ctypes.c_ulong(dwPortVal))
+                ctypes.cdll.msvcrt._outpd(ctypes.c_ushort(
+                    wPortAddr), ctypes.c_ulong(dwPortVal))
 
     def set_port_byte(self, wPortAddr, dwPortVal):
         return self.__set_port_value(wPortAddr, dwPortVal, 1)
@@ -230,7 +236,8 @@ class WinIO(object):
         PhysStruct.dwPhysMemSizeInBytes = 4
 
         pdwLinAddr = self.map_phys_to_lin(PhysStruct)
-        dwLinAddrRaw = bytes((ctypes.c_char * 4).from_address(pdwLinAddr.value))
+        dwLinAddrRaw = bytes(
+            (ctypes.c_char * 4).from_address(pdwLinAddr.value))
         dwPhysVal = struct.unpack('@L', dwLinAddrRaw)
 
         self.unmap_physical_memory(PhysStruct)
@@ -266,7 +273,8 @@ class WinIO(object):
             hService = win32service.OpenService(
                 self.hSCManager, 'WINIO', win32service.SERVICE_ALL_ACCESS)
 
-            # If QueryServiceConfig() can not return a correct config, it will throw exception!
+            # If QueryServiceConfig() can not return a correct config, it will
+            # throw exception!
             pServiceConfig = win32service.QueryServiceConfig(hService)
 
             # If service is set to load automatically, don't delete it!
@@ -334,12 +342,15 @@ class WinIO(object):
         # Find the data directory
         while True:
             # If we installed by pip, the data directory will be ../../../data
-            pywinio_module_dir = os.path.join(os.path.dirname(__file__), '../../..', 'data')
+            pywinio_module_dir = os.path.join(
+                os.path.dirname(__file__), '../../..', 'data')
             if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):
                 break
 
-            # If we installed by easy_install, the data directory will be ../data
-            pywinio_module_dir = os.path.join(os.path.dirname(__file__), '..', 'data')
+            # If we installed by easy_install, the data directory will be
+            # ../data
+            pywinio_module_dir = os.path.join(
+                os.path.dirname(__file__), '..', 'data')
             if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):
                 break
 
@@ -388,7 +399,8 @@ class WinIO(object):
 
         # Enable I/O port access for this process if running on a 32 bit OS
         if not self.__is_64bit_os():
-            win32file.DeviceIoControl(hDriver, IOCTL_WINIO_ENABLEDIRECTIO, None, 4)
+            win32file.DeviceIoControl(
+                hDriver, IOCTL_WINIO_ENABLEDIRECTIO, None, 4)
 
         self.hDriver = hDriver
         self.dll_is_initialized = True
@@ -397,7 +409,8 @@ class WinIO(object):
         if self.hDriver is not None:
             # Disable I/O port access if running on a 32 bit OS
             if not self.__is_64bit_os():
-                win32file.DeviceIoControl(self.hDriver, IOCTL_WINIO_DISABLEDIRECTIO, None, 4)
+                win32file.DeviceIoControl(
+                    self.hDriver, IOCTL_WINIO_DISABLEDIRECTIO, None, 4)
 
             self.hDriver = None
 

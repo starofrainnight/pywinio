@@ -35,6 +35,7 @@ import platform
 import subprocess
 import sys
 
+
 def _clean_check(cmd, target):
     """
     Run the command to download target. If the command fails, clean up before
@@ -46,6 +47,7 @@ def _clean_check(cmd, target):
         if os.access(target, os.F_OK):
             os.unlink(target)
         raise
+
 
 def download_file_powershell(url, target):
     """
@@ -59,6 +61,7 @@ def download_file_powershell(url, target):
         "(new-object System.Net.WebClient).DownloadFile(%(url)r, %(target)r)" % vars(),
     ]
     _clean_check(cmd, target)
+
 
 def has_powershell():
     if platform.system() != 'Windows':
@@ -76,9 +79,11 @@ def has_powershell():
 
 download_file_powershell.viable = has_powershell
 
+
 def download_file_curl(url, target):
     cmd = ['curl', url, '--silent', '--output', target]
     _clean_check(cmd, target)
+
 
 def has_curl():
     cmd = ['curl', '--version']
@@ -94,9 +99,11 @@ def has_curl():
 
 download_file_curl.viable = has_curl
 
+
 def download_file_wget(url, target):
     cmd = ['wget', url, '--quiet', '--output-document', target]
     _clean_check(cmd, target)
+
 
 def has_wget():
     cmd = ['wget', '--version']
@@ -111,6 +118,7 @@ def has_wget():
     return True
 
 download_file_wget.viable = has_wget
+
 
 def download_file_insecure(url, target):
     """
@@ -137,6 +145,7 @@ def download_file_insecure(url, target):
 
 download_file_insecure.viable = lambda: True
 
+
 def get_best_downloader():
     downloaders = [
         download_file_powershell,
@@ -148,10 +157,12 @@ def get_best_downloader():
     for dl in downloaders:
         if dl.viable():
             return dl
-        
+
+
 def download(url):
     downloader = get_best_downloader()
     downloader(url, os.path.basename(url))
+
 
 def use_pip():
     try:
@@ -159,34 +170,36 @@ def use_pip():
     except:
         import os
         import sys
-        
+
         # If we do not have pip, we fetch and install one. It will also install
-        # setuptools and wheel. 
+        # setuptools and wheel.
         url = "https://bootstrap.pypa.io/get-pip.py"
         filename = os.path.basename(url)
         download(url)
         os.system("%s %s" % (sys.executable, filename))
-        
+
+
 def use_rabird():
     try:
         import rabird.core
     except:
-        use_pip()    
+        use_pip()
         import pip
         pip.main(["install", "rabird.core"])
-        
-        module_dirs = "rabird/core/__init__.py"         
+
+        module_dirs = "rabird/core/__init__.py"
         for apath in sys.path:
             module_path = os.path.join(apath, module_dirs)
             if os.path.exists(module_path) and os.path.isfile(module_path):
-                # Generate empty __init__.py into rabird/, an ugly fix 
+                # Generate empty __init__.py into rabird/, an ugly fix
                 # for can't find rabird.core module during installation.
                 #
-                # Because there does not have any __init__.py in the 
+                # Because there does not have any __init__.py in the
                 # namespace directory and we can't import it immediately
-                # after pip installed in the same process, so we added 
+                # after pip installed in the same process, so we added
                 # an empty __init__.py into rabird/ namespace directory
                 # for satisfy it.
-                afile = open(os.path.join(os.path.dirname(os.path.dirname(module_path)), "__init__.py"), "wb")
+                afile = open(os.path.join(os.path.dirname(
+                    os.path.dirname(module_path)), "__init__.py"), "wb")
                 afile.close()
                 break
