@@ -1,24 +1,19 @@
 #!/usr/bin/env python
 
-from rabird_bootstrap import use_rabird
-use_rabird()
+from pydgutils_bootstrap import use_pydgutils, download
+use_pydgutils()
 
 import os
 import os.path
 import sys
 import shutil
-import logging
 import fnmatch
 import glob
 import zipfile
 import shutil
-from six.moves import urllib
+import pydgutils
 import math
-import rabird.core.distutils
-import rabird.core.logging
 from setuptools import setup, find_packages
-from rabird.core.distutils.downloader import download
-
 
 def download_winio_binary():
     # Download required winio binaries
@@ -40,12 +35,8 @@ def download_winio_binary():
 package_name = 'rabird.winio'
 
 # Convert source to v2.x if we are using python 2.x.
-source_dir = rabird.core.distutils.preprocess_source()
-
-# Exclude the original source package, only accept the preprocessed package!
-our_packages = find_packages(where=source_dir)
-
-our_requires = []
+our_packages, source_dir = pydgutils.process_packages()
+our_requires = pydgutils.process_requirements()
 
 long_description = (
     open("README.rst", "r").read()

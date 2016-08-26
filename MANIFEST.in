@@ -3,9 +3,7 @@ recursive-include src *
 include *.rst
 include *.txt
 include setup.cfg
-include rabird_bootstrap.py
-
-prune preprocessed
+include pydgutils_bootstrap.py
 
 global-exclude *.dll
 global-exclude *.pyc
