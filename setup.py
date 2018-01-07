@@ -15,9 +15,10 @@ import pydgutils
 import math
 from setuptools import setup, find_packages
 
+
 def download_winio_binary():
     # Download required winio binaries
-    winio_url = "http://www.internals.com/utilities/WinIo.zip"
+    winio_url = "https://github.com/starofrainnight/winio/releases/download/3.0/WinIo.zip"
     winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
     if not os.path.exists(winio_path):
         download(winio_url)
