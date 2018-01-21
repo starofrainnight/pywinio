@@ -15,24 +15,6 @@ import pydgutils
 import math
 from setuptools import setup, find_packages
 
-
-def download_winio_binary():
-    # Download required winio binaries
-    winio_url = "https://github.com/starofrainnight/winio/releases/download/3.0/WinIo.zip"
-    winio_path = os.path.join(os.curdir, os.path.basename(winio_url))
-    if not os.path.exists(winio_path):
-        download(winio_url)
-
-    # If existed data directory, we rebuild it
-    data_path = os.curdir
-    if os.path.exists("WinIO"):
-        shutil.rmtree("WinIO")
-
-    # Open the winio zip downloaded_file and unzip to ./data directory.
-    winio_zip = zipfile.ZipFile(winio_path)
-    winio_zip.extractall(data_path)
-    winio_zip.close()
-
 package_name = 'rabird.winio'
 
 # Convert source to v2.x if we are using python 2.x.
@@ -45,8 +27,6 @@ long_description = (
     open("CHANGES.rst", "r").read()
 )
 
-# Prepare winio binary files for setup()
-download_winio_binary()
 
 setup(
     name=package_name,
@@ -69,7 +49,6 @@ setup(
     install_requires=our_requires,
     package_dir={"": source_dir},
     packages=our_packages,
-    data_files=[("data", glob.glob("WinIO/Binaries/*"))],
     namespace_packages=[package_name.split(".")[0]],
     zip_safe=False,  # Unpack the egg downloaded_file during installation.
 )

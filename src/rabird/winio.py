@@ -12,6 +12,7 @@ import locale
 import logging
 import ctypes
 import struct
+import winiobinary
 
 __author__ = """Hong-She Liang"""
 __email__ = 'starofrainnight@gmail.com'
@@ -344,26 +345,12 @@ class WinIO(object):
 
     def __get_driver_file_path(self):
         # Find the data directory
-        while True:
-            # If we installed by pip, the data directory will be ../../../data
-            pywinio_module_dir = os.path.join(
-                os.path.dirname(__file__), '../../..', 'data')
-            if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):
-                break
-
-            # If we installed by easy_install, the data directory will be
-            # ../data
-            pywinio_module_dir = os.path.join(
-                os.path.dirname(__file__), '..', 'data')
-            if os.path.exists(os.path.join(pywinio_module_dir, "WinIo32.sys")):
-                break
-
-            break
+        winio_binary_data_dir = winiobinary.get_data_dir()
 
         if self.__is_64bit_os():
-            result = os.path.join(pywinio_module_dir, 'WinIo64.sys')
+            result = os.path.join(winio_binary_data_dir, 'WinIo64.sys')
         else:
-            result = os.path.join(pywinio_module_dir, 'WinIo32.sys')
+            result = os.path.join(winio_binary_data_dir, 'WinIo32.sys')
 
         result = os.path.normpath(os.path.realpath(result))
 
