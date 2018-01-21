@@ -19,7 +19,11 @@ package_name = 'rabird.winio'
 
 # Convert source to v2.x if we are using python 2.x.
 our_packages, source_dir = pydgutils.process_packages()
-our_requires = pydgutils.process_requirements()
+
+install_requirements = [
+    'rabird.core',
+    'winiobinary',
+]
 
 long_description = (
     open("README.rst", "r").read()
@@ -46,7 +50,7 @@ setup(
         "Programming Language :: Python :: Implementation :: CPython",
         "Topic :: Software Development :: Libraries",
     ],
-    install_requires=our_requires,
+    install_requires=install_requirements,
     package_dir={"": source_dir},
     packages=our_packages,
     namespace_packages=[package_name.split(".")[0]],
