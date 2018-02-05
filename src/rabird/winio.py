@@ -16,7 +16,7 @@ import winiobinary
 
 __author__ = """Hong-She Liang"""
 __email__ = 'starofrainnight@gmail.com'
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 # Define the various device type values.  Note that values used by Microsoft
 # Corporation are in the range 0-32767, and 32768-65535 are reserved for use
