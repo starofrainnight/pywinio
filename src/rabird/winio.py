@@ -242,7 +242,7 @@ class WinIO(object):
 
         pdwLinAddr = self.map_phys_to_lin(PhysStruct)
         dwLinAddrRaw = bytes(
-            (ctypes.c_char * 4).from_address(pdwLinAddr.value))
+            (ctypes.c_char * 4).from_address(pdwLinAddr))
         dwPhysVal = struct.unpack('@L', dwLinAddrRaw)
 
         self.unmap_physical_memory(PhysStruct)
@@ -260,7 +260,7 @@ class WinIO(object):
             raise ValueError("Linear address invalid!")
 
         data = ctypes.cast(
-            ctypes.c_void_p(pdwLinAddr.value),
+            ctypes.c_void_p(pdwLinAddr),
             ctypes.POINTER(ctypes.c_ulong))
         data.contents.value = dwPhysVal
 
