@@ -67,5 +67,5 @@ target/
 preprocessed/
 WinIo/
 WinIo.zip
-
-
+.mypy_cache/
+.vscode/
