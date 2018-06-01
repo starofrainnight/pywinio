@@ -1,4 +1,8 @@
 environment:
+  global:
+    TWINE_USERNAME: starofrainnight
+    TWINE_PASSWORD:
+      secure: J2HRP2iBW/CQpvmbmrUxbj9Vj2VdgqlVbzuxvBLohOk=
   matrix:
     # Pre-installed Python versions, which Appveyor may upgrade to
     # a later point release.
