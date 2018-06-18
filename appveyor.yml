@@ -98,5 +98,8 @@ artifacts:
 
 on_success:
   # Only upload when python 3.6.x and arch 32 on tags
+  #
+  # You must pre-define TWINE_USERNAME and TWINE_PASSWORD variables on project's
+  # environment.
   - ps: "if (($env:APPVEYOR_REPO_TAG -eq 'true') -and ($env:PYTHON_VERSION -eq '3.6.x') -and ($env:PYTHON_ARCH -eq '32')) { pip install twine; twine upload dist\\* }"
 
