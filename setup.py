@@ -44,7 +44,7 @@ long_description = (
 
 setup(
     name=package_name,
-    version='0.2.4',
+    version='0.2.5',
     author="Hong-She Liang",
     author_email="starofrainnight@gmail.com",
     url="https://github.com/starofrainnight/%s" % package_name,
