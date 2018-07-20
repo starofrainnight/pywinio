@@ -1,6 +1,8 @@
 rabird.winio
 ========================
 
+**WARNING: This library was renamed to** `pywinio <https://github.com/starofrainnight/pywinio>`_ **, please use it instead!**
+
 A wrapper library for winio .
 
 Thanks for the great WinIO library which comes from Yariv Kaplan.
