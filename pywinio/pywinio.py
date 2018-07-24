@@ -1,16 +1,10 @@
 import os
-import sys
 import ctypes
-import atexit
-import win32api
 import win32con
 import win32file
 import winioctlcon
 import pywintypes
 import win32service
-import locale
-import logging
-import ctypes
 import struct
 import winiobinary
 
@@ -130,12 +124,11 @@ class WinIO(object):
 
     def __stop_driver(self):
         hService = None
-        ServiceStatus = None
 
         hService = win32service.OpenService(
             self.hSCManager, 'WINIO', win32service.SERVICE_ALL_ACCESS)
         try:
-            ServiceStatus = win32service.ControlService(
+            win32service.ControlService(
                 hService, win32service.SERVICE_CONTROL_STOP)
         except pywintypes.error as e:
             if e.winerror == EC_SERVICE_NOT_STARTED:
@@ -147,10 +140,11 @@ class WinIO(object):
     def __get_port_value(self, wPortAddr, bSize):
         if bSize not in [1, 2, 4]:
             raise InvalidArgumentError(
-                'Argument "bSize" only accept 1, 2, 4. Current value : %s!' % (str(bSize)))
+                'Argument "bSize" only accept 1, 2, 4. Current value : %s!' % (
+                    str(bSize)))
 
-        # If this is a 64 bit OS, we must use the driver to access I/O ports even
-        # if the application is 32 bit
+        # If this is a 64 bit OS, we must use the driver to access I/O ports
+        # even if the application is 32 bit
         if self.__is_64bit_os():
             PortStruct = tagPortStruct()
             PortStruct.bSize = bSize
@@ -164,11 +158,14 @@ class WinIO(object):
                                      4))[0]
         else:
             if bSize == 1:
-                return ctypes.c_ubyte(ctypes.cdll.msvcrt._inp(ctypes.c_ushort(wPortAddr))).value
+                return ctypes.c_ubyte(ctypes.cdll.msvcrt._inp(
+                    ctypes.c_ushort(wPortAddr))).value
             elif bSize == 2:
-                return ctypes.c_ushort(ctypes.cdll.msvcrt._inpw(ctypes.c_ushort(wPortAddr))).value
+                return ctypes.c_ushort(ctypes.cdll.msvcrt._inpw(
+                    ctypes.c_ushort(wPortAddr))).value
             elif bSize == 4:
-                return ctypes.c_ulong(ctypes.cdll.msvcrt._inpd(ctypes.c_ushort(wPortAddr))).value
+                return ctypes.c_ulong(ctypes.cdll.msvcrt._inpd(
+                    ctypes.c_ushort(wPortAddr))).value
 
     def get_port_byte(self, wPortAddr):
         return self.__get_port_value(wPortAddr, 1)
@@ -181,8 +178,8 @@ class WinIO(object):
 
     @_ensure_initialized
     def __set_port_value(self, wPortAddr, dwPortVal, bSize):
-        # If this is a 64 bit OS, we must use the driver to access I/O ports even
-        # if the application is 32 bit
+        # If this is a 64 bit OS, we must use the driver to access I/O ports
+        # even if the application is 32 bit
         if self.__is_64bit_os():
             PortStruct = tagPortStruct()
             PortStruct.bSize = bSize
@@ -269,8 +266,8 @@ class WinIO(object):
     def uninstall_driver(self):
         hService = None
         pServiceConfig = None
-        dwBytesNeeded = 0
-        cbBufSize = 0
+        # dwBytesNeeded = 0
+        # cbBufSize = 0
 
         try:
             self.__stop_driver()
@@ -294,31 +291,30 @@ class WinIO(object):
             raise
 
     def install_driver(self, pszWinIoDriverPath, IsDemandLoaded):
-        hService = None
-
         # Remove any previous instance of the driver
         self.uninstall_driver()
 
         # Install the driver
-        if (IsDemandLoaded == True):
+        if (IsDemandLoaded is True):
             demand_flags = win32service.SERVICE_DEMAND_START
         else:
             demand_flags = win32service.SERVICE_SYSTEM_START
 
         try:
-            hService = win32service.CreateService(self.hSCManager,
-                                                  "WINIO",
-                                                  "WINIO",
-                                                  win32service.SERVICE_ALL_ACCESS,
-                                                  win32service.SERVICE_KERNEL_DRIVER,
-                                                  demand_flags,
-                                                  win32service.SERVICE_ERROR_NORMAL,
-                                                  pszWinIoDriverPath,
-                                                  None,
-                                                  0,
-                                                  None,
-                                                  None,
-                                                  None)
+            win32service.CreateService(
+                self.hSCManager,
+                "WINIO",
+                "WINIO",
+                win32service.SERVICE_ALL_ACCESS,
+                win32service.SERVICE_KERNEL_DRIVER,
+                demand_flags,
+                win32service.SERVICE_ERROR_NORMAL,
+                pszWinIoDriverPath,
+                None,
+                0,
+                None,
+                None,
+                None)
         except pywintypes.error as e:
             if e.winerror == EC_SERVICE_EXISTED:  # Service existed!
                 return True
@@ -327,8 +323,6 @@ class WinIO(object):
 
     def __start_driver(self):
         hService = None
-        bResult = True
-
         hService = win32service.OpenService(
             self.hSCManager, "WINIO", win32service.SERVICE_ALL_ACCESS)
         win32service.StartService(hService, None)
@@ -360,13 +354,14 @@ class WinIO(object):
         # Try to open the winio device.
         hDriver = None
         try:
-            hDriver = win32file.CreateFile(r"\\.\WINIO",
-                                           win32con.GENERIC_READ | win32con.GENERIC_WRITE,
-                                           0,
-                                           None,
-                                           win32con.OPEN_EXISTING,
-                                           win32con.FILE_ATTRIBUTE_NORMAL,
-                                           None)
+            hDriver = win32file.CreateFile(
+                r"\\.\WINIO",
+                win32con.GENERIC_READ | win32con.GENERIC_WRITE,
+                0,
+                None,
+                win32con.OPEN_EXISTING,
+                win32con.FILE_ATTRIBUTE_NORMAL,
+                None)
 
             # Driver already installed in system as service by user, we must
             # not uninstall it.
@@ -380,13 +375,14 @@ class WinIO(object):
             self.install_driver(self.__get_driver_file_path(), True)
             self.__start_driver()
 
-            hDriver = win32file.CreateFile(r"\\.\WINIO",
-                                           win32con.GENERIC_READ | win32con.GENERIC_WRITE,
-                                           win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE,
-                                           None,
-                                           win32con.OPEN_EXISTING,
-                                           win32con.FILE_ATTRIBUTE_NORMAL,
-                                           None)
+            hDriver = win32file.CreateFile(
+                r"\\.\WINIO",
+                win32con.GENERIC_READ | win32con.GENERIC_WRITE,
+                win32con.FILE_SHARE_READ | win32con.FILE_SHARE_WRITE,
+                None,
+                win32con.OPEN_EXISTING,
+                win32con.FILE_ATTRIBUTE_NORMAL,
+                None)
 
         # Enable I/O port access for this process if running on a 32 bit OS
         if not self.__is_64bit_os():
@@ -408,7 +404,7 @@ class WinIO(object):
         if self.__is_need_uninstall_driver:
             self.uninstall_driver()
 
-        dll_is_initialized = False
+        self.dll_is_initialized = False
 
     def __del__(self):
         if self.dll_is_initialized:

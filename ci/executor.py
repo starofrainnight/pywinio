@@ -44,7 +44,7 @@ def test(env):
             run_module("mypy -m pywinio --ignore-missing-imports")
         elif env == 'flake8':
             run_module("pip install flake8")
-            run_module("flake8 pywinio")
+            run_module("flake8 pywinio tests")
 
 
 @main.command()

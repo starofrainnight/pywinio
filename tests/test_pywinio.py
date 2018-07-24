@@ -7,7 +7,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from pywinio import pywinio
+from pywinio import pywinio  # noqa
 from pywinio.__main__ import main
 
 
