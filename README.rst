@@ -2,12 +2,8 @@
 pywinio
 =======
 
-
 .. image:: https://img.shields.io/pypi/v/pywinio.svg
     :target: https://pypi.python.org/pypi/pywinio
-
-.. image:: https://travis-ci.org/starofrainnight/pywinio.svg?branch=master
-    :target: https://travis-ci.org/starofrainnight/pywinio
 
 .. image:: https://ci.appveyor.com/api/projects/status/github/starofrainnight/pywinio?svg=true
     :target: https://ci.appveyor.com/project/starofrainnight/pywinio
