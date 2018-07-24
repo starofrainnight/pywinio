@@ -14,6 +14,8 @@ Thanks for the great WinIO library which comes from Yariv Kaplan.
 
 The WinIO library binary distribution will be accessed from winiobinary package.
 
+NOTE: This library has been renamed from 'rabird.winio' to 'pywinio' after 0.3.0 .
+
 * License: Apache-2.0
 
 Usage
