@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-"""Unit test package for rabird.winio"""
+"""Unit test package for pywinio."""

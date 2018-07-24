@@ -1,16 +1,27 @@
-rabird.winio
-========================
+=======
+pywinio
+=======
 
-**WARNING: This library was renamed to** `pywinio <https://github.com/starofrainnight/pywinio>`_ **, please use it instead!**
 
-A wrapper library for winio .
+.. image:: https://img.shields.io/pypi/v/pywinio.svg
+    :target: https://pypi.python.org/pypi/pywinio
+
+.. image:: https://travis-ci.org/starofrainnight/pywinio.svg?branch=master
+    :target: https://travis-ci.org/starofrainnight/pywinio
+
+.. image:: https://ci.appveyor.com/api/projects/status/github/starofrainnight/pywinio?svg=true
+    :target: https://ci.appveyor.com/project/starofrainnight/pywinio
+
+A wrapper library for WinIO
 
 Thanks for the great WinIO library which comes from Yariv Kaplan.
 
 The WinIO library binary distribution will be accessed from winiobinary package.
 
+* License: Apache-2.0
+
 Usage
-========================
+-----
 
 * Keyboard Emulation
 
@@ -81,7 +92,7 @@ Usage
 
 
 Privilege Requirements
-========================
+-----------------------
 
 WinIo requires administrative privileges to run properly. This can be achieved by:
 
@@ -92,7 +103,7 @@ WinIo requires administrative privileges to run properly. This can be achieved b
 The included C# samples demonstrate using an embedded manifest file to request privilege elevation.
 
 Driver Signing Requirements on 64-bit Systems
-=================================================
+---------------------------------------------
 
 64-bit versions of Windows only load device drivers that are signed by a code signing certificate issued by a public CA such as Verisign, Thawte, etc. WinIo64.sys must not be deployed on production machines unless a code signing certificate is obtained and used to sign this file. The bundled copy of WinIo64.sys is signed with a self-signed certificate and can only be used on development/test machines with Windows running in a special "test" mode. In order to use the bundled version of WinIo64.sys, you need to take the following steps:
 
@@ -108,8 +119,8 @@ Driver Signing Requirements on 64-bit Systems
 For more information on Windows driver signing requirements, please refer to http://www.microsoft.com/whdc/winlogo/drvsign/kmcs_walkthrough.mspx.
 
 Licenses
-===============
+---------------------------------------------
 
-This library used MIT license which already descripted in LICENSE.txt
+This library was licensed under Apache-2.0 which already descripted in LICENSE
 
-WinIO library's license descripted in LICENSE-WINIO.txt
+WinIO library's license descripted in LICENSE-WINIO

@@ -1,6 +1,31 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+*$py.class
+
+# OSX useful to ignore
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
 
 # C extensions
 *.so
@@ -42,6 +67,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *,cover
+.hypothesis/
 
 # Translations
 *.mo
@@ -53,19 +79,30 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# IntelliJ Idea family of suites
+.idea
+*.iml
+## File-based project format:
+*.ipr
+*.iws
+## mpeltonen/sbt-idea plugin
+.idea_modules/
+
 # PyBuilder
 target/
 
-# Eclipse project files
-.settings/
-.project
-.pydevproject
+# pyenv python configuration file
+.python-version
 
-# Temporary files
-*.bak
-*.old
-preprocessed/
-WinIo/
-WinIo.zip
-.mypy_cache/
+# Cookiecutter
+output/
+python_boilerplate/
+
+# Ignore vscode stuffs
 .vscode/
+
+# Ignore mypy stuffs
+.mypy_cache
+
+# pytest
+.pytest_cache

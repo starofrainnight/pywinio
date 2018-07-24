@@ -1,38 +1,27 @@
+clone_depth: 2
+
+image: Visual Studio 2017
+
+platform:
+  - x86
+  - x64
+
 environment:
   matrix:
     # Pre-installed Python versions, which Appveyor may upgrade to
     # a later point release.
     # See: http://www.appveyor.com/docs/installed-software#python
+    # - PYTHON: "C:\\Python27"
+    #   PYTHON_VERSION: "2.7.x"
 
     - PYTHON: "C:\\Python34"
       PYTHON_VERSION: "3.4.x"
-      PYTHON_ARCH: "32"
-      TOX_ENV: "py34"
-
-    - PYTHON: "C:\\Python34-x64"
-      PYTHON_VERSION: "3.4.x"
-      PYTHON_ARCH: "64"
-      TOX_ENV: "py34"
 
     - PYTHON: "C:\\Python35"
       PYTHON_VERSION: "3.5.x"
-      PYTHON_ARCH: "32"
-      TOX_ENV: "py35"
-
-    - PYTHON: "C:\\Python35-x64"
-      PYTHON_VERSION: "3.5.x"
-      PYTHON_ARCH: "64"
-      TOX_ENV: "py35"
 
     - PYTHON: "C:\\Python36"
       PYTHON_VERSION: "3.6.x"
-      PYTHON_ARCH: "32"
-      TOX_ENV: "py36"
-
-    - PYTHON: "C:\\Python36-x64"
-      PYTHON_VERSION: "3.6.x"
-      PYTHON_ARCH: "64"
-      TOX_ENV: "py36"
 
 install:
   # If there is a newer build queued for the same PR, cancel this one.
@@ -47,12 +36,7 @@ install:
   - ECHO "Filesystem root:"
   - ps: "ls \"C:/\""
 
-  - ECHO "Installed SDKs:"
-  - ps: "ls \"C:/Program Files/Microsoft SDKs/Windows\""
-
-  # Install Python (from the official .msi of http://python.org) and pip when
-  # not already installed.
-  - ps: if (-not(Test-Path($env:PYTHON))) { & appveyor\install.ps1 }
+  - "IF NOT %PLATFORM%*==x86* SET PYTHON=%PYTHON%-%PLATFORM%"
 
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
@@ -66,30 +50,27 @@ install:
   # Upgrade to the latest version of pip to avoid it displaying warnings
   # about it being out of date.
   - "python -m pip install -U pip"
-  - "pip install wheel"
-
+  - "python -m pip install -U setuptools"
   # Prepare test utility
-  - "pip install tox"
+  - "python -m pip install click"
 
 build: off
 
 test_script:
   # Run the project tests
-  - "tox -e %TOX_ENV%"
+  # Syntax check
+  # - ps: "if (($env:PYTHON_VERSION -eq '3.6.x') -and ($env:PLATFORM -eq 'x64')) { python ./ci/executor.py test -e mypy -e flake8 }"
+  - "python ./ci/executor.py test"
 
 after_test:
   # If tests are successful, create binary packages for the project.
-  - "python setup.py sdist"
+  - "python ./ci/executor.py pack"
+  # Only deploy when python 3.6.x and arch 32 on tags
+  # - ps: "if (($env:APPVEYOR_REPO_TAG -eq 'true') -and ($env:PYTHON_VERSION -eq '3.6.x') -and ($env:PLATFORM -eq 'x86')) { pip install twine; twine upload dist\\* }"
   - ps: "ls dist"
 
 artifacts:
   # Archive the generated packages in the ci.appveyor.com build report.
   - path: dist\*
 
-on_success:
-  # Only upload when python 3.6.x and arch 32 on tags
-  #
-  # You must pre-define TWINE_USERNAME and TWINE_PASSWORD variables on project's
-  # environment.
-  - ps: "if (($env:APPVEYOR_REPO_TAG -eq 'true') -and ($env:PYTHON_VERSION -eq '3.6.x') -and ($env:PYTHON_ARCH -eq '32')) { pip install twine; twine upload dist\\* }"
 

@@ -1,0 +1,36 @@
+# Config file for automatic testing at travis-ci.org
+language: python
+
+matrix:
+  include:
+    # - python: 2.7
+    - python: 3.4
+    - python: 3.5
+    - python: 3.6
+
+# command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
+install:
+  - python -m pip install -U pip
+  - python -m pip install -U setuptools
+  # Prepare test utility
+  - python -m pip install click
+
+# command to run tests, e.g. python setup.py test
+script:
+  - |
+    # Only run mypy and flake8 check with python 3.6
+    if [ "${TRAVIS_PYTHON_VERSION}" == "3.6" ] ; then
+      python ./ci/executor.py test -e mypy -e flake8
+    fi
+  - python ./ci/executor.py test
+
+# After you create the Github repo and add it to Travis, predefine
+# TWINE_USERNAME and TWINE_PASSWORD environment variables in your travis-ci
+# project settings, so that twine will access them without place the private
+# account informations in this travis configuration file.
+after_success:
+  - |
+    # Only deploy on python 3.6 and tag version
+    if [ -n "${TRAVIS_TAG}" ] && [ "${TRAVIS_PYTHON_VERSION}" == "3.6" ] ; then
+      python ./ci/executor.py deploy
+    fi

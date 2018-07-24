@@ -1,12 +1,12 @@
 pip
-tox
-pytest
-pytest-runner
-wheel
 bumpversion
+wheel
 watchdog
 flake8
 coverage
 Sphinx
 cryptography
 PyYAML
+pytest
+pytest-runner
+click
