@@ -24,7 +24,7 @@ tests_requires = [
 
 setup(
     name="pywinio",
-    version="0.3.0",
+    version="0.3.1",
     description="A wrapper library for WinIO",
     long_description=long_description,
     author="Hong-She Liang",
