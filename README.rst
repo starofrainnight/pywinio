@@ -14,6 +14,8 @@ Thanks for the great WinIO library which comes from Yariv Kaplan.
 
 The WinIO library binary distribution will be accessed from winiobinary package.
 
+This library may not work as expected after win10, because the WinIO project seems abandoned by it's original author and we have no proper rights to update it unless we write another one from ground. So this library may not works if Windows changed the API or principle which the WinIO project base on.
+
 NOTE: This library has been renamed from 'rabird.winio' to 'pywinio' after 0.3.0 .
 
 * License: Apache-2.0
@@ -88,6 +90,22 @@ Usage
     # Scancodes references : https://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html
     key_press(0x1E)
 
+FAQ
+---------------------------
+
+How to emulate a mouse?
+==========================
+
+This library just the API wrapper of WinIO, I give a sample about keyboard emulation just for showing the wrapper works. And WinIO is a library provied directly access I/O ports and physical memory. That's all.
+
+I don't know the details about how the mouse works, so if you want to emulate the mouse just go by yourself.
+
+Tips: If you are testing on Win10 or later, you MUST have a real ps/2 mouse connected (same as the situation of keyboard emulation - I guess).
+
+If it can do sth...?
+==========================
+
+Oh, this wrapper can either if winio can. But at first, you must be familiar with the things you want to do and how the winio works.
 
 Privilege Requirements
 -----------------------
